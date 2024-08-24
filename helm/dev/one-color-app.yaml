@@ -21,7 +21,7 @@ spec:
     repoURL: 'https://github.com/diegolagospagopa/devopslab-diego-deploy'
     path: helm/dev/one-color
     helm:
-      releaseName: one-color
+      releaseName: init-charts
       valueFiles:
         - values.yaml
       # valuesObject:
