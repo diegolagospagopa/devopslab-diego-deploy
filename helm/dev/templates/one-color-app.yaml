@@ -28,7 +28,7 @@ spec:
       valuesObject:
         microservice-chart:
           azure:
-            workloadIdentityClientId: '{{.Values.microservice-chart.azure.workloadIdentityClientId}}'
+            workloadIdentityClientId: '{{.Values.azureWorkloadIdentityClientId}}'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: diego
