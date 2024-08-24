@@ -31,7 +31,7 @@ spec:
       #       path: /one-color/status(/|$)(.*)
   destination:
     server: 'https://kubernetes.default.svc'
-    # namespace: diego
+    namespace: diego
   syncPolicy:
     automated: {}
   revisionHistoryLimit: 10
