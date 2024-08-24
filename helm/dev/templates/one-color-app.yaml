@@ -25,11 +25,10 @@ spec:
       releaseName: init-charts
       valueFiles:
         - values.yaml
-      # valuesObject:
-      #   microservice-chart:
-      #     namespace: "diego"
-      #     ingress:
-      #       path: /one-color/status(/|$)(.*)
+      valuesObject:
+        microservice-chart:
+          azure:
+            workloadIdentityClientId: '{{.Values.microservice-chart.azure.workloadIdentityClientId}}'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: diego
