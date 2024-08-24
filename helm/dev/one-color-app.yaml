@@ -20,6 +20,7 @@ spec:
 #    targetRevision: 5.4.0
     repoURL: 'https://github.com/diegolagospagopa/devopslab-diego-deploy'
     path: helm/dev/one-color
+    targetRevision: init-charts
     helm:
       releaseName: init-charts
       valueFiles:
