@@ -14,10 +14,8 @@ metadata:
   labels:
     name: one-color
 spec:
-  project: terraform-argocd-project
+  project: '{{.Values._argocdProjectName}}'
   source:
-#    chart: microservice-chart
-#    targetRevision: 5.4.0
     repoURL: 'https://github.com/diegolagospagopa/devopslab-diego-deploy'
     path: helm/dev/one-color
     targetRevision: init-charts
@@ -28,7 +26,7 @@ spec:
       valuesObject:
         microservice-chart:
           azure:
-            workloadIdentityClientId: '{{.Values.azureWorkloadIdentityClientId}}'
+            workloadIdentityClientId: '{{.Values._azureWorkloadIdentityClientId}}'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: diego
