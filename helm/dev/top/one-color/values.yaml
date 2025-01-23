@@ -1,9 +1,15 @@
+postman-test:
+  run: true
+  nameRepo: devops-java-springboot-color
+  dir: src/test/postman
+  collectionName: mil-papos.postman_collection.json
+  envVariables: dev.postman_environment.json
+
 microservice-chart:
   namespace: "diego"
 
   deployment:
     create: true
-    replicas: 1
 
   serviceAccount:
     name: diego-workload-identity
@@ -18,7 +24,7 @@ microservice-chart:
 
   image:
     repository: ghcr.io/pagopa/devops-java-springboot-color
-    tag: latest
+    tag: develop-latest
     pullPolicy: Always
 
   tmpVolumeMount:
@@ -63,8 +69,27 @@ microservice-chart:
       memory: "256Mi"
       cpu: "150m"
     limits:
-      memory: "256Mi"
-      cpu: "150m"
+      memory: "512Mi"
+      cpu: "300m"
+
+  autoscaling:
+    enable: true
+    minReplica: 0
+    maxReplica: 1
+    pollingInterval: 30 # seconds
+    cooldownPeriod: 10 # seconds
+    triggers:
+      - type: cron
+        metadata:
+          # Required
+          timezone: Europe/Rome  # The acceptable values would be a value from the IANA Time Zone Database.
+          start: 0 7 * * *
+          end: 0 21 * * *
+          desiredReplicas: "1"
+      - type: cpu
+        metadata:
+          type: Utilization
+          value: "60"
 
   keyvault:
     name: "dvopla-d-itn-diego-kv"
@@ -78,17 +103,17 @@ microservice-chart:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.azure.com/mode
-            operator: In
-            values:
-            - user
+          - matchExpressions:
+              - key: kubernetes.azure.com/mode
+                operator: In
+                values:
+                  - user
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchLabels:
-              aadpodidbinding: diego-pod-identity
-          namespaces: ["diego"]
-          topologyKey: topology.kubernetes.io/zone
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                aadpodidbinding: diego-pod-identity
+            namespaces: ["diego"]
+            topologyKey: topology.kubernetes.io/zone
